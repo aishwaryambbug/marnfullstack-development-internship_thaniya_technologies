@@ -6,22 +6,23 @@ require("dotenv").config();
 const app = express();
 
 app.use(express.json());
-app.use(cors()); // allow frontend connection
+app.use(cors());
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
   .catch(err => console.log(err));
 
-// 👉 ADD THIS LINE (VERY IMPORTANT)
+// ROUTES
 app.use("/api/tasks", require("./routes/taskRoutes"));
+app.use("/api/auth", require("./routes/authRoutes"));
 
-// Test route
+// TEST ROUTE
 app.get("/", (req, res) => {
   res.send("API Running...");
 });
 
-// Start server
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
+// SERVER
+app.listen(process.env.PORT, () => {
+  console.log(`Server running on port ${process.env.PORT}`);
 });
